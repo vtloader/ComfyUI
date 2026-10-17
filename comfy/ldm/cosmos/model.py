@@ -22,7 +22,10 @@ from typing import Optional, Tuple
 import torch
 from einops import rearrange
 from torch import nn
-from torchvision import transforms
+try:  # Ascend images ship without torchvision; only this model needs it
+    from torchvision import transforms
+except ImportError:  # pragma: no cover
+    transforms = None
 
 from enum import Enum
 import logging

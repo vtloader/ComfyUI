@@ -140,6 +140,15 @@ try:
     import torch_npu  # noqa: F401
     _ = torch.npu.device_count()
     npu_available = torch.npu.is_available()
+    if npu_available:
+        # torch_npu has no lazy context the way torch.cuda does. The memory queries
+        # below run at import time, before any tensor op would create one, and they
+        # fail with "The context is empty ... aclrtGetMemInfo ... 107002" until the
+        # device has been set and its context created. The index is this process's
+        # own, so it stays right under remapping.
+        torch.npu.set_device(int(os.environ.get('ASCEND_RT_VISIBLE_DEVICES', '0').split(',')[0] or 0))
+        if hasattr(torch.npu, 'init'):
+            torch.npu.init()
 except:
     npu_available = False
 

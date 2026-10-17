@@ -3,7 +3,10 @@ import torch
 from .autoencoder_dc import AutoencoderDC
 import comfy.audio
 
-import torchvision.transforms as transforms
+try:  # Ascend images ship without torchvision; only this model needs it
+    import torchvision.transforms as transforms
+except ImportError:  # pragma: no cover
+    transforms = None
 from .music_vocoder import ADaMoSHiFiGANV1
 
 

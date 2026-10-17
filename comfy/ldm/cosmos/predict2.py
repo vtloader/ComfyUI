@@ -9,7 +9,10 @@ from typing import Callable, Optional, Tuple
 import math
 
 from .position_embedding import VideoRopePosition3DEmb, LearnablePosEmbAxis
-from torchvision import transforms
+try:  # Ascend images ship without torchvision; only this model needs it
+    from torchvision import transforms
+except ImportError:  # pragma: no cover
+    transforms = None
 
 import comfy.patcher_extension
 from comfy.ldm.modules.attention import AttentionTensorContainer, ComfyAttention, optimized_attention

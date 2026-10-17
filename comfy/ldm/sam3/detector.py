@@ -5,7 +5,10 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision.ops import roi_align
+try:  # Ascend images ship without torchvision; only this model needs it
+    from torchvision.ops import roi_align
+except ImportError:  # pragma: no cover
+    roi_align = None
 
 from comfy.ldm.modules.attention import optimized_attention
 from comfy.ldm.sam3.tracker import SAM3Tracker, SAM31Tracker

@@ -1,7 +1,10 @@
 import torch
 import torch.nn as nn
 import comfy.audio
-import torchvision.transforms.functional as TVF
+try:  # Ascend images ship without torchvision; only this model needs it
+    import torchvision.transforms.functional as TVF
+except ImportError:  # pragma: no cover
+    TVF = None
 import numpy as np
 from tokenizers import Tokenizer
 from dataclasses import dataclass

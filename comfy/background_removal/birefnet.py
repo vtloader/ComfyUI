@@ -4,7 +4,10 @@ import numpy as np
 import torch.nn as nn
 from functools import partial
 import torch.nn.functional as F
-from torchvision.ops import deform_conv2d
+try:  # Ascend images ship without torchvision; only this model needs it
+    from torchvision.ops import deform_conv2d
+except ImportError:  # pragma: no cover
+    deform_conv2d = None
 from comfy.ldm.modules.attention import optimized_attention_for_device
 
 CXT = [3072, 1536, 768, 384][1:][::-1][-3:]

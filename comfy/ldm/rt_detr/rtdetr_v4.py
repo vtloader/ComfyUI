@@ -4,7 +4,10 @@ from typing import List
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torchvision
+try:  # Ascend images ship without torchvision; only this model needs it
+    import torchvision
+except ImportError:  # pragma: no cover
+    torchvision = None
 import comfy.model_management
 from comfy.ldm.modules.attention import optimized_attention_for_device
 

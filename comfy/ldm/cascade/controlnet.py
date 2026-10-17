@@ -16,7 +16,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import torchvision
+try:  # Ascend images ship without torchvision; only the cascade models need it
+    import torchvision
+except ImportError:  # pragma: no cover - the text-encoder path never reaches this model
+    torchvision = None
 from torch import nn
 from .common import LayerNorm2d_op
 
